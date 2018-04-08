@@ -1,0 +1,70 @@
+#!/bin/bash
+# runs chosen tokeniser over test files
+# it assumes tests are in the directory containing this script
+# it assumes that the executable is in the parent directory
+
+# suffix to check, one of w, m or f
+case $1 in
+tokeniser-w)
+	suffix=w
+	;;
+tokeniser-m)
+	suffix=m
+	;;
+tokeniser-f)
+	suffix=f
+	;;
+*)
+	suffix=f
+	;;
+esac
+
+# work out relative path to tests directory
+THISPWD=`pwd`
+
+# find the test directory name
+TESTDIR=`dirname $0`
+cd "$TESTDIR"
+TESTPWD=`pwd`
+
+# find the parent directory name
+PARENTDIR=`dirname "${TESTPWD}"`
+
+# fix up pathnames to be displayed
+if [ "$THISPWD" == "$TESTPWD" ] ; then
+	TESTDIR=""
+	PARENTDIR="../"
+elif [ "$THISPWD" == "$PARENTDIR" ] ; then
+	TESTDIR=`basename "$TESTPWD"`/
+	PARENTDIR="./"
+else
+	echo "cd ${TESTDIR}"
+	TESTDIR=`basename "$TESTPWD"`/
+	PARENTDIR="./"
+fi
+
+# tokeniser to use
+tokeniser="tokeniser-${suffix}"
+
+# check we have a tokeniser first
+if [ ! -x "../${tokeniser}" ] ; then
+	echo Cannot find executable ${PARENTDIR}${tokeniser}
+	exit -1
+fi
+
+# nullglob is set so nothing runs if there are no test files
+shopt -s nullglob
+
+echo "Testing student tokens${suffix} class against .tokens${suffix} files"
+# test tokeniser-[wmf] with all test files that have a matching .tokens[wmf] file
+for i in *.tokens${suffix} ; do
+	input="${i%%.tokens${suffix}}"
+	if [ -f "${input}" ] ; then
+		echo -n "Checking \"${PARENTDIR}${tokeniser} < ${TESTDIR}${input} | diff - ${TESTDIR}${i}\" - test "
+		if "../${tokeniser}" < ${input} | diff -q - ${i} > /dev/null 2> /dev/null ; then
+			echo passed
+		else
+			echo failed
+		fi
+	fi
+done

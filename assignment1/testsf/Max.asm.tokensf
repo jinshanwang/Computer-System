@@ -1,0 +1,22 @@
+***** tokeniser-f *****
+Token class: punctuation
+      value: @
+Token class: identifier
+      value: R0
+Token class: identifier
+      value: D
+Token class: punctuation
+      value: =
+Token class: identifier
+      value: M
+Token class: punctuation
+      value: @
+Token class: identifier
+      value: R1
+Token class: identifier
+      value: D
+Token class: punctuation
+      value: =
+Token class: identifier
+      value: D
+Number of tokens read: 10

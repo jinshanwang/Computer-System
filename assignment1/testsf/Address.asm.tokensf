@@ -1,0 +1,10 @@
+***** tokeniser-f *****
+Token class: punctuation
+      value: @
+Token class: identifier
+      value: hello_mum
+Token class: punctuation
+      value: :
+Token class: number
+      value: 17
+Number of tokens read: 4

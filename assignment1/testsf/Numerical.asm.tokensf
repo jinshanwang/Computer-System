@@ -1,0 +1,6 @@
+***** tokeniser-f *****
+Token class: punctuation
+      value: @
+Token class: number
+      value: 832
+Number of tokens read: 2
